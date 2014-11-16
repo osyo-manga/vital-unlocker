@@ -1,0 +1,26 @@
+let s:Rocker = vital#of("vital").import("Unlocker.Rocker")
+
+
+let g:vital_unlocker_example_simple = 42
+let s:dict = { "value" : 42 }
+
+" 保存する対象を指定してロックする
+" 設定できる値
+" - オプション名
+" - グローバル変数名
+" - 辞書、リストの値
+let s:locker = s:Rocker.lock("l:conceallevel", "l:concealcursor", "g:vital_unlocker_example_simple", s:dict)
+
+" 値の変更
+let &l:concealcursor = "nvic"
+let &l:conceallevel = 3
+let g:vital_unlocker_example_simple = 0
+let s:dict.value = 0
+
+" 変更した値を戻す
+call s:locker.unlock()
+
+echo g:vital_unlocker_example_simple
+echo s:dict
+
+
