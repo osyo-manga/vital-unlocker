@@ -3,22 +3,18 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
+let s:holders = map(split(globpath(expand("<sfile>:p:h") . "/Holder", "*"), "\n"), "fnamemodify(v:val, ':t:r')")
+
 function! s:_vital_loaded(V)
 	let s:V = a:V
-	let s:Variable = a:V.import("Unlocker.Holder.Variable")
-	let s:Value = a:V.import("Unlocker.Holder.Value")
-	let s:Multi = a:V.import("Unlocker.Holder.Multi")
-	let s:Any   = a:V.import("Unlocker.Holder.Any")
+	for name in s:holders
+		let {"s:".name} = a:V.import("Unlocker.Holder." . name)
+	endfor
 endfunction
 
 
 function! s:_vital_depends()
-	return [
-\		"Unlocker.Holder.Variable",
-\		"Unlocker.Holder.Value",
-\		"Unlocker.Holder.Multi",
-\		"Unlocker.Holder.Any",
-\	]
+	return map(copy(s:holders), "'Unlocker.Holder.' . v:val")
 endfunction
 
 
@@ -49,29 +45,18 @@ function! s:as_set_extend(holder)
 endfunction
 
 
-function! s:variable(name)
-	return s:Variable.make(a:name)
-endfunction
-
-
-function! s:value(value)
-	return s:Value.make(a:value)
-endfunction
+for s:name in s:holders
+	execute
+\		"function! s:" . tolower(s:name) . "(...)\n"
+\		"	return call(s:" . s:name . ".make, a:000, s:" . s:name . ")\n"
+\		"endfunction\n"
+endfor
 
 
 function! s:option(name)
 	return s:Variable.make("&" . a:name)
 endfunction
 
-
-function! s:multi(value)
-	return s:Multi.make(a:value)
-endfunction
-
-
-function! s:any(...)
-	return call(s:Any.make, a:000, s:Any)
-endfunction
 
 
 

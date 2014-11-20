@@ -48,6 +48,14 @@ function! s:test_value_list()
 endfunction
 
 
+function! s:test_is_makeable()
+	let Value = s:Value
+	OwlCheck  Value.is_makeable({})
+	OwlCheck  Value.is_makeable([])
+	OwlCheck !Value.is_makeable("")
+	OwlCheck !Value.is_makeable(0)
+endfunction
+
 
 function! s:test_throw()
 " 	OwlThrow s:Value.make(10), E605

@@ -19,7 +19,7 @@ function! s:locker.unlock()
 endfunction
 
 
-function! s:has_concept_locker(obj)
+function! s:has_concept(obj)
 	return type(a:obj) == type({})
 \		&& type(get(a:obj, "get", "")) == type(function("tr"))
 \		&& type(get(a:obj, "set", "")) == type(function("tr"))
@@ -27,8 +27,8 @@ endfunction
 
 
 function! s:make(derived)
-	if !s:has_concept_locker(a:derived)
-		throw "vital-unlocker Unlocker.Rocker.Base.make() : Don't has locker concept."
+	if !s:has_concept(a:derived)
+		throw "vital-unlocker Unlocker.Rocker.HolderBase.make() : Don't has locker concept."
 	endif
 	let result = extend(deepcopy(s:locker), a:derived)
 	return result

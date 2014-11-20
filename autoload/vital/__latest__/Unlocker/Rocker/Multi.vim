@@ -9,25 +9,22 @@ endfunction
 
 let s:obj = {}
 
-function! s:obj.get()
-	return map(copy(self.__holders), "v:val.get()")
-endfunction
-
-
-function! s:obj.set(values)
-	call map(copy(self.__holders), "v:val.set(a:values[v:key])")
+function! s:obj.lock()
+	call map(copy(self.__rockers), "v:val.lock()")
 	return self
 endfunction
 
 
-function! s:make(holders)
-	let result = deepcopy(s:obj)
-	let result.__holders = s:_as_list(a:holders)
-	return result
+function! s:obj.unlock()
+	call map(copy(self.__rockers), "v:val.unlock()")
 endfunction
 
 
-
+function! s:make(rockers)
+	let result = deepcopy(s:obj)
+	let result.__rockers = s:_as_list(a:rockers)
+	return result
+endfunction
 
 
 let &cpo = s:save_cpo

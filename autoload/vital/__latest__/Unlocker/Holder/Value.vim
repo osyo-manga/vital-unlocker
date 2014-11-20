@@ -32,7 +32,14 @@ endfunction
 
 
 function! s:obj.set(value)
-	return s:_copy(self.__value, a:value)
+	call s:_copy(self.__value, a:value)
+	return self
+endfunction
+
+
+function! s:is_makeable(rhs)
+	let type = type(a:rhs)
+	return type == type({}) || type == type([])
 endfunction
 
 

@@ -11,11 +11,12 @@ endfunction
 
 function! s:obj.set(value)
 	call setpos(self.__expr, a:value)
+	return self
 endfunction
 
 
-function! s:has_concept(expr)
-	return a:expr =~ 'w$\|w0\|[v.$]\|''[a-zA-Z]'
+function! s:is_makeable(expr)
+	return a:expr =~ '\.\|''[a-zA-Z]'
 endfunction
 
 

@@ -1,5 +1,5 @@
 call vital#of("vital").unload()
-let s:Base = vital#of("vital").import("Unlocker.Rocker.Base")
+let s:Base = vital#of("vital").import("Unlocker.Rocker.HolderBase")
 
 
 function! s:test_has_concept_locker()

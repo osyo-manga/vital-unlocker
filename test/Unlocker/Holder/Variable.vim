@@ -55,3 +55,22 @@ function! s:test_variable_deepcopy()
 	unlet g:unlocker_holder_variable_test_value
 endfunction
 
+
+
+function! s:test_is_makeable()
+	let Variable = s:Variable
+	
+	let g:unlocker_holder_variable_test_value = 10
+	OwlCheck  Variable.is_makeable("&incsearch")
+	OwlCheck  Variable.is_makeable("&l:incsearch")
+	OwlCheck  Variable.is_makeable("g:unlocker_holder_variable_test_value")
+	OwlCheck !Variable.is_makeable("unlocker_holder_variable_test_value")
+	OwlCheck !Variable.is_makeable("&g:unlocker_holder_variable_test_value")
+	OwlCheck !Variable.is_makeable("incsearch")
+	OwlCheck !Variable.is_makeable("")
+	OwlCheck !Variable.is_makeable("0")
+	OwlCheck !Variable.is_makeable({})
+	OwlCheck !Variable.is_makeable(0)
+	unlet g:unlocker_holder_variable_test_value
+endfunction
+

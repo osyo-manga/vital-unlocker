@@ -27,27 +27,9 @@ function! s:is_holder(rhs)
 endfunction
 
 
-function! s:is_string(rhs)
-	return type(a:rhs) == type("")
-endfunction
-
-
 function! s:is_option(rhs)
-	return s:is_string(a:rhs) && exists("&" . a:rhs)
-endfunction
-
-
-function! s:is_variable(rhs)
-	return !s:is_option(a:rhs)
-\		&& s:is_string(a:rhs)
-\		&& a:rhs =~ '^[a-zA-Z&]'
-\		&& exists(a:rhs)
-endfunction
-
-
-function! s:is_value(rhs)
-	let type = type(a:rhs)
-	return type == type({}) || type == type([])
+	return type(a:rhs) == type("")
+\		&& exists("&" . a:rhs)
 endfunction
 
 
@@ -58,13 +40,12 @@ endfunction
 
 function! s:make(rhs, ...)
 	return a:0 >= 1 ? s:Multi.make(map([a:rhs] + a:000, "s:make(v:val)"))
-\		 : s:is_holder(a:rhs)     ? a:rhs
-\		 : s:is_value(a:rhs)    ? s:Value.make(a:rhs)
-\		 : s:is_variable(a:rhs) ? s:Variable.make(a:rhs)
-\		 : s:is_option(a:rhs)   ? s:Variable.make("&" . a:rhs)
+\		 : s:is_holder(a:rhs)   ? a:rhs
+\		 : s:Value.is_makeable(a:rhs) ? s:Value.make(a:rhs)
+\		 : s:Variable.is_makeable(a:rhs) ? s:Variable.make(a:rhs)
+\		 : s:is_option(a:rhs) ? s:Variable.make("&" . a:rhs)
 \		 : s:throw("vital-unlocker Unlocker.Holder.Any.make() : No supported value.")
 endfunction
-
 
 
 let &cpo = s:save_cpo

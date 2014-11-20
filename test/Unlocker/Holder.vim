@@ -6,7 +6,7 @@ function! s:test_as_deepcopy_value_dict()
 	let dict = { "homu" : 42, "mami" : 42 }
 
 	let value = s:Holder.value(dict)
-	let holder = s:Holder.as_deepcopy(s:Holder.value(dict))
+	let holder = s:Holder.as_get_deepcopy(s:Holder.value(dict))
 	OwlCheck value isnot holder
 	OwlCheck value.get() isnot holder.get()
 
